@@ -17,6 +17,6 @@ def receive_msg(bt, msg, size = max_data_size):
     return bt.recv(size)
 
 sock = open_bt('98:D3:32:20:82:CA', 1)
-data = sock.recv(2)
+data = sock.recv(128)
 
 print(data)
