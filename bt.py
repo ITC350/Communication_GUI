@@ -1,22 +1,19 @@
 import bluetooth
-
-max_data_size = 128
+from config import default_msg_size, mac_addr, port
 
 def open_bt(mac_addr, port):
     sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
     sock.connect((mac_addr, port))
     return sock
 
-def close_bt(bt):
-    bt.close()
+def close_bt(sock):
+    sock.close()
 
-def send_msg(bt, msg):
-    bt.send(msg)
+def send_msg(sock, msg):
+    sock.send(msg)
 
-def receive_msg(bt, msg, size = max_data_size):
-    return bt.recv(size)
+def receive_msg(sock, msg, size = default_msg_size):
+    return sock.recv(size)
 
-sock = open_bt('98:D3:32:20:82:CA', 1)
-data = sock.recv(128)
-
-print(data)
+#sock = open_bt(mac_addr, port)
+#data = sock.recv(128)
