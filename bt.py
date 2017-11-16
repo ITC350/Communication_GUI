@@ -1,19 +1,23 @@
 import bluetooth
 from config import default_msg_size, mac_addr, port
 
-def open_bt(mac_addr, port):
-    sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    sock.connect((mac_addr, port))
-    return sock
+class Bluetooth:
+    def __init__(self, mac_addr, port = 1, default_msg_size = 128):
+        self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        self.mac_addr = mac_addr
+        self.port = port
+        self.default_msg_size = default_msg_size
+    
+    def open(self):
+        self.sock.connect((mac_addr, port))
 
-def close_bt(sock):
-    sock.close()
+    def close_bt(self, sock):
+        self.sock.close()
 
-def send_msg(sock, msg):
-    sock.send(msg)
+    def send_msg(self, msg):
+        self.sock.send(msg)
 
-def receive_msg(sock, msg, size = default_msg_size):
-    return sock.recv(size)
+    def receive_msg(self, msg, size = default_msg_size):
+        return self.sock.recv(size)
 
-#sock = open_bt(mac_addr, port)
-#data = sock.recv(128)
+
