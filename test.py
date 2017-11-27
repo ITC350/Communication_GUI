@@ -1,4 +1,4 @@
-import bt
+from bt import Bluetooth
 
 bt_dev = Bluetooth('98:D3:32:20:82:CA')
 
