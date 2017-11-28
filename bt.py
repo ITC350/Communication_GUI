@@ -9,9 +9,6 @@ class Bluetooth(BluetoothSocket):
     def open(self):
         self.connect((self.mac_addr, self.port))
 
-    def close(self):
-        self.close()
-
     def send_msg(self, msg):
         self.send(msg)
 
