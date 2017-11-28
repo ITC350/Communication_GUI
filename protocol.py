@@ -10,7 +10,7 @@ cmds = {
 }
 
 class Protocol(object):
-    def __init__(self, mac_addr, cmds, config : []):
+    def __init__(self, mac_addr, cmds, config = []):
         self.bluetooth = Bluetooth(mac_addr, 1)
         self.config = config
         self.api = cmds
@@ -48,4 +48,5 @@ class Protocol(object):
             if c in self.api.keys:
                 self.config.append(c)
             else:
+                self.config = []
                 return "Invalid command: " + c

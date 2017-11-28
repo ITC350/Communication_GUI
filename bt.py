@@ -15,5 +15,5 @@ class Bluetooth(BluetoothSocket):
     def send_msg(self, msg):
         self.send(msg)
 
-    def receive_msg(self, msg, size = 32):
+    def receive_msg(self, size = 32):
         return self.recv(size)
