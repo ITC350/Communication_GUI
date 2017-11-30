@@ -5,11 +5,11 @@ import struct
 mac = '98:D3:32:20:82:CA'
 
 test_config_1 = Protocol(mac, 30)
-test_config_1.settings([2, 0, 0, 500, 50, 50])
+test_config_1.settings([0, 0.04, 0.005], [10, 100, 1000])
 test_config_1.start()
 
 test_config_2 = Protocol(mac, 30)
-test_config_2.settings([2, 0, 0, 500, 50, 50])
+test_config_2.settings([0, 0.04, 0.005], [10, 100, 1000])
 test_config_2.disable_abs()
 test_config_2.start()
 

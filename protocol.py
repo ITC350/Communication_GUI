@@ -39,9 +39,11 @@ class Protocol(object):
         for i in range(0, self.msg_size - len(self.config)):
             self.nop()
 
-    def settings(self, args):
+    def settings(self, pid, acc):
         self.config += struct.pack('b', api['settings'])
-        for a in args:
+        for p in pid:
+            self.config += struct.pack('f', p)
+        for a in acc:
             self.config += struct.pack('I', a)
 
     def nop(self):
