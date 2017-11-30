@@ -16,9 +16,9 @@ bt_dev.send_msg(bytes(s))
 
 msg = b''
 
-while True:
+while len(msg) < 2048:
     msg = msg + bt_dev.receive_msg(127)
-    print(str(len(msg)) + ': ' + str(msg))
+    #print(str(len(msg)) + ': ' + str(msg))
 
 print(str(msg))
 
