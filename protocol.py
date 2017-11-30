@@ -1,52 +1,48 @@
 from bt import Bluetooth
+import struct
+import array
 
-cmds = {
-    'execute' : 0x00,
-    'forward' : 0x01,
-    'backward' : 0x02,
-    'turn' : 0x03,
-    'brake' : 0x04,
-    'halt' : 0xFF
+api = {
+    'nop' : 0x00,
+    'start' : 0x01,
+    'settings' : 0x02,
+    'disable_abs' : 0x03,
+    'halt' : 0x04
 }
 
 class Protocol(object):
-    def __init__(self, mac_addr, cmds, config = []):
+    def __init__(self, mac_addr, msg_size):
         self.bluetooth = Bluetooth(mac_addr, 1)
-        self.config = config
-        self.api = cmds
-
+        self.config = b''
+        self.msg_size = msg_size
+    
     def __enter__(self):
         self.bluetooth.open()
     
     def __exit__(self, exception_type, exception_value, traceback):
         self.bluetooth.close()
 
+    def send(self):
+        self.bluetooth.send_msg(config)
+
+    def receive(self, size = 127):
+        self.bluetooth.receive(size)
+
     def halt(self):
-        self.config.send_msg(self.api['halt'])
+        self.bluetooth.send_msg(struct.pack('b', api['halt']))
 
-    def execute(self):
-        self.config.append(self.api['execute'])
-        self.bluetooth.send_msg(self.config)
+    def disable_abs(self):
+        self.config += struct.pack('b', api['disable_abs'])
 
-    def forward(self, seconds = 1):
-        self.config.append(self.api['forward'])
-        self.config.append(seconds)
-    
-    def backward(self, seconds = 1):
-        self.config.append(self.api['backward'])
-        self.config.append(seconds)
-    
-    def turn(self, angle):
-        self.config.append(self.api['turn'])
-        self.config.append(angle)
-    
-    def brake(self):
-        self.config.append(self.api['brake'])
+    def start(self):
+        self.config += struct.pack('b', api['start'])
+        for i in range(0, self.msg_size - len(self.config)):
+            self.nop()
 
-    def build(self, cmds):
-        for c in cmds:
-            if c in self.api.keys:
-                self.config.append(c)
-            else:
-                self.config = []
-                return "Invalid command: " + c
+    def settings(self, args):
+        self.config += struct.pack('b', api['settings'])
+        for a in args:
+            self.config += struct.pack('I', a)
+
+    def nop(self):
+        self.config += struct.pack('b', api['nop'])
